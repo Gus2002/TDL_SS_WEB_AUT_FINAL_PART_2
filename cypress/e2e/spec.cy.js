@@ -1,4 +1,5 @@
 import AutomationPracticeFormPage from "../pageObjects/AutomationPracticeForm.page";
+import SortablePage from "../pageObjects/Sortable.page";
 
 
 
@@ -31,6 +32,34 @@ context("Automation practice form testing", () => {
     for(let i=0;i<10;i++){
       AutomationPracticeFormPage.getValueFields(i).should("have.text",validation_information[i])
     }
+  });
+
+})
+
+context("Interactions testing", () => {
+  beforeEach(() => {
+    SortablePage.visit();
+  });
+
+  it.only("Scenario 2 - Interactions - Sortable", () => {
+    
+    let numbers = ["One", "Two", "Three", "Four", "Five", "Six"]
+    for(let i = 0;i<6;i++){
+      SortablePage.numberDivs.eq(i).should("have.text", numbers[i])
+    }
+    let coordinate = -225
+    for(let j=0;j<5;j++){
+      SortablePage.numberDivs.eq(5).click().trigger("mousedown", {
+        button: 0
+      }).trigger('mousemove', 0, coordinate, {force:true}).click({force:true})
+      if(j!==4) coordinate+=50
+      else coordinate+=25
+    }
+    numbers.reverse()
+    for(let k = 0;k<6;k++){
+      SortablePage.numberDivs.eq(k).should("have.text", numbers[k])
+    }
+
   });
 
 })
